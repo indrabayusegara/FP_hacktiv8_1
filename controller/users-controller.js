@@ -1,75 +1,38 @@
-const users = require('./../models/users'); 
- 
+const users = require('./../models/users');
+const pool = require('./../config/config')
 
-class UsersController { 
- 
-    static registerUser(req,res){ 
-        users.findAllusers()
-        .then((result) => { 
-            res.render('data-mahasiswa', {mahasiswas : result});
-        })
-        .catch((err)=> { 
-            res.render('error-page');
-        })
-    }   
-     
-    static loginUser(req,res){ 
-        users.findAllusers()
-        .then((result) => { 
-            res.render('data-mahasiswa', {mahasiswas : result});
-        })
-        .catch((err)=> { 
-            res.render('error-page');
-        })
-    }  
-     
-    static reflectionDataAdd(req,res){ 
-        const {nama, tanggal_lahir, alamat, id_jurusan} = req.body; 
-        users.addMahasiswa(nama, tanggal_lahir, alamat, id_jurusan) 
-        .then(()=>{ 
-            res.redirect('/mahasiswa');
-        }) 
-        .catch(()=>{ 
-            res.render('server-error');
-        })
-    } 
+class UsersController {
 
-    static reflectionDataById(req,res){ 
-        const {id} = req.params 
-        users.findMahasiswaById(id) 
-        .then((result)=>{ 
-            res.render('detail-mahasiswa', {mahasiswa : result});
-        }) 
-        .catch((err) => {   
-            if (err.name === "userNotFound") return res.render('not-found');
-            res.render('server-error');
-        });
-    } 
-    
-    static reflectionDataUpdate(req,res){ 
-        const {id} = req.params;  
-        const { nama, tanggal_lahir, alamat, id_jurusan} = req.body;   
-        users.updateMahasiswa(id, nama, tanggal_lahir, alamat, id_jurusan) 
-        .then(()=>{ 
-            res.redirect('/mahasiswa', );
-        }) 
-        .catch(()=>{ 
-            res.render('not-found');
-        })
-    }  
-     
-    static reflectionDataDelete(req,res){ 
-        const {id} = req.params   
-        mahasiswaM.deleteMahasiswa(id) 
-        .then(()=>{ 
-            res.redirect('/mahasiswa');
-        })
-        .catch(()=>{ 
-            res.render('server-error');
-        })
-    } 
+    static registerUser(req, res) {
+        res.status(200).json({ message: "register users" })
+    }
 
-}  
+    static loginUser(req, res) {
+        res.status(200).json({ message: "login users" })
+    }
 
- 
+    static reflectionDataAdd(req, res) {
+        res.status(200).json({ message: "add reflections" })
+    }
+
+    static async reflectionAllData(req, res) {
+        pool.query(`SELECT * FROM "Reflections"`, (err, result)=>{
+        if(err) throw err
+        const reflections = result.rows
+        res.status(200).json(reflections)
+        })
+
+    }
+
+    static reflectionDataUpdate(req, res) {
+        res.status(200).json({ message: "reflections update" })
+    }
+
+    static reflectionDataDelete(req, res) {
+        res.status(200).json({ message: "reflections delete" })
+    }
+
+}
+
+
 module.exports = UsersController;

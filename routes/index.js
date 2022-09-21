@@ -1,18 +1,9 @@
-const UsersController = require('../controller/users-controller');
-
+const reflectionsRoutes = require('./reflectionsRoutes')
+const usersRoutes = require('./usersRoutes')
 const router = require('express').Router();
 
-router.post('/api/v1/users/register', UsersController.registerUser); 
- 
-router.post('/api/v1/users/login', UsersController.loginUser); 
- 
-router.post('/api/v1/reflections', UsersController.reflectionDataAdd); 
- 
-router.get('/api/v1/reflections', UsersController.reflectionDataById); 
- 
-router.put('/api/v1/reflections/:id', UsersController.reflectionDataUpdate); 
- 
-router.delete('/api/v1/reflections/:id', UsersController.reflectionDataDelete);
+router.use('/api/v1/users', usersRoutes)
+router.use('/api/v1/reflections', reflectionsRoutes)
 
 
 module.exports = router;
