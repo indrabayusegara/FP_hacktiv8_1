@@ -1,13 +1,10 @@
-const pool = require('./config/config')
-
-// const res = await pool.query(`select * from "Reflections"`)
-// await pool.end()
-
-pool.query(`select * from "Reflections"`, (err, res) => {
-    console.log(err, res.rows)
-    pool.end()
-})
-
-class Tes{
-    s
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
+const data = {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 }
+
+console.log(data)
