@@ -20,7 +20,7 @@ class Reflections {
                 RETURNING id, success, low_point, take_away, owner_id, created_date, modified_date
             `, [success, low_point, take_away, owner_id, now, now])
             .then(({rows})=>{
-                const reflections = new Reflections(
+                const reflections = new Reflections( 
                     rows[0].id,
                     rows[0].success,
                     rows[0].low_point,

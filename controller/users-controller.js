@@ -12,7 +12,7 @@ class UsersController {
         }).catch((err) => { 
             console.log(err);
             res.status(500).json({ message: "internal server error" })
-        });    
+        });
     }
 
     static loginUser(req, res) {
@@ -30,7 +30,6 @@ class UsersController {
         }
        });
     }
-
 }
 
 
