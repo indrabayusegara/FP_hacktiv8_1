@@ -1,15 +1,15 @@
 create table users ( 
 	id serial primary key, 
-	email varchar, 
-	Password VARCHAR
+	email varchar NOT NULL, 
+	Password VARCHAR NOT NULL
 );
 
  create table reflections ( 
  	id serial primary key, 
-	success varchar, 
-	low_point varchar, 
-	take_away varchar, 
-	owner_id int, 
+	success varchar NOT NULL, 
+	low_point varchar NOT NULL, 
+	take_away varchar NOT NULL, 
+	owner_id int NOT NULL, 
 	created_date TIMESTAMP, 
 	modified_date TIMESTAMP, 
 	CONSTRAINT fk_users 

@@ -3,18 +3,24 @@ const User = require("../models/users");
 
 
 class UsersController {
-
+ 
+    //Register User
     static registerUser(req, res) { 
-        const {email, password} = req.body; 
+        const {email, password} = req.body;  
         User.register(email, password) 
         .then((data) => {
             res.status(201).json({id: data.id, email: data.email})    
-        }).catch((err) => { 
-            console.log(err);
-            res.status(500).json({ message: "internal server error" })
+        }).catch((err) => {  
+            console.log(err.message); 
+            if (err.name === "error") { 
+                res.status(500).json({ message: "Email already in use" });  
+            } else { 
+                res.status(401).json({ message : 'internal server error'});
+            }
         });
-    }
+    } 
 
+    //Login User
     static loginUser(req, res) {
        const {email, password} = req.body; 
        User.login(email, password) 

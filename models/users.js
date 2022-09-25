@@ -8,9 +8,10 @@ class User{
         this.email = email; 
         this.password = password;
     } 
-     
-    static register(email, password) {  
-        return new Promise((resolve, reject) => {  
+      
+    //Models Register User
+    static register(email, password) {   
+        return new Promise((resolve, reject) => {   
             password = hash(password);
             pool.query(` 
             INSERT INTO users(email, password) 
@@ -27,7 +28,8 @@ class User{
         }); 
         });
     }  
-     
+      
+    //Models Login User
     static login(email, password) {  
         return new Promise((resolve, reject) => {  
             pool.query(` 

@@ -11,6 +11,7 @@ class Reflections {
         this.modified_date = modified_date;
     }
 
+    //Models Add Reflections
     static add(success, low_point, take_away, owner_id){
         return new Promise((resolve, reject)=>{
             const now = new Date()
@@ -36,7 +37,8 @@ class Reflections {
             });
         });
     }
-
+ 
+    //Models Read Data Reflections
     static findAll(owner_id) {
         return new Promise((resolve, reject) => {
             pool.query(`
@@ -62,6 +64,48 @@ class Reflections {
                     reject(error)
                 })
         })
+    } 
+     
+    //Models Delete Data Reflections 
+    static delete(id){ 
+        return new Promise((resolve, reject)=> { 
+            pool.query('DELETE FROM users WHERE id = $1 RETURNING id' 
+            , [id]) 
+        .then(({rows}) => { 
+            const data = new Reflections( 
+                rows[0].id
+                );
+            resolve(data);
+        }).catch((err) => {
+            reject(err);
+        });
+        })
+    } 
+     
+    static update(success, low_point, take_away, owner_id, id){
+        return new Promise((resolve, reject)=>{
+            const now = new Date()
+            pool.query(`UPDATE reflections 
+            SET success= $1, low_point = $2, take_away = $3, owner_id = $4, created_date = $5, modified_date = $6
+            WHERE id = $7
+            RETURNING id, success, low_point, take_away, owner_id, created_date, modified_date`
+            , [success, low_point, take_away, owner_id, now, now, id])
+            .then(({rows})=>{
+                const reflections = new Reflections( 
+                    rows[0].id,
+                    rows[0].success,
+                    rows[0].low_point,
+                    rows[0].take_away,
+                    rows[0].owner_id,
+                    rows[0].created_date,
+                    rows[0].modified_date,
+                    );
+                resolve(reflections)
+            })
+            .catch((error)=>{
+                reject(error)
+            });
+        });
     }
 }
 
