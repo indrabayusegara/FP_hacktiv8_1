@@ -11,29 +11,29 @@ class Reflections {
         this.modified_date = modified_date;
     }
 
-    static add(success, low_point, take_away, owner_id){
-        return new Promise((resolve, reject)=>{
+    static add(success, low_point, take_away, owner_id) {
+        return new Promise((resolve, reject) => {
             const now = new Date()
             pool.query(`
                 INSERT INTO reflections (success, low_point, take_away, owner_id, created_date, modified_date)
                 VALUES ($1, $2, $3, $4, $5, $6)
                 RETURNING id, success, low_point, take_away, owner_id, created_date, modified_date
             `, [success, low_point, take_away, owner_id, now, now])
-            .then(({rows})=>{
-                const reflections = new Reflections(
-                    rows[0].id,
-                    rows[0].success,
-                    rows[0].low_point,
-                    rows[0].take_away,
-                    rows[0].owner_id,
-                    rows[0].created_date,
-                    rows[0].modified_date,
+                .then(({ rows }) => {
+                    const reflections = new Reflections(
+                        rows[0].id,
+                        rows[0].success,
+                        rows[0].low_point,
+                        rows[0].take_away,
+                        rows[0].owner_id,
+                        rows[0].created_date,
+                        rows[0].modified_date,
                     );
-                resolve(reflections)
-            })
-            .catch((error)=>{
-                reject(error)
-            });
+                    resolve(reflections)
+                })
+                .catch((error) => {
+                    reject(error)
+                });
         });
     }
 
@@ -62,6 +62,36 @@ class Reflections {
                     reject(error)
                 })
         })
+    }
+
+    static update(success, low_point, take_away, id, owner_id){
+        return new Promise((resolve, reject)=>{
+            const now = new Date()
+            pool.query(
+                `UPDATE reflections set success=$1, low_point=$2, take_away=$3, modified_date=$4 WHERE id=$5 AND owner_id=$6`, 
+            [success, low_point, take_away, now,  id, owner_id])
+            .then((data) => {
+                resolve(data)
+            })
+            .catch((error)=>{
+                reject(error)
+            })
+
+        })
+    }
+
+    static remove(id, owner_id) {
+        return new Promise((resolve, reject) => {
+            pool.query(
+                `delete from reflections where id = $1 and owner_id = $2`, [id, owner_id]
+            )
+                .then((data) => {
+                    resolve(data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
 }
 
