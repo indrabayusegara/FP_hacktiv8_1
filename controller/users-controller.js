@@ -9,8 +9,7 @@ class UsersController {
         User.register(email, password) 
         .then((data) => {
             res.status(201).json({id: data.id, email: data.email})    
-        }).catch((err) => { 
-            console.log(err);
+        }).catch((error) => { 
             res.status(500).json({ message: "internal server error" })
         });    
     }
@@ -20,12 +19,12 @@ class UsersController {
        User.login(email, password) 
        .then((data) => { 
         const token = sign({id: data.id, email: data.email})
-        res.status(201).json(token);
-       }).catch((err) => {
-        if (err.name === 'UserNotFound' || err.name === 'WrongPassword') { 
+        res.status(201).json({token});
+       })
+       .catch((error) => {
+        if (error.name === 'UserNotFound' || error.name === 'WrongPassword') { 
             res.status(401).json({ message : 'User not Found or Wrong Password'});
         } else {  
-            console.log(err);
             res.status(401).json({ message : 'internal server error'});
         }
        });

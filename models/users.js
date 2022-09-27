@@ -42,8 +42,8 @@ class User{
 
             const user = new User(rows[0].id, rows[0].email, rows[0].password);
             resolve(user);
-        }).catch((err) => {
-            reject(err);
+        }).catch((error) => {
+            reject(error);
         }); 
         });
     } 

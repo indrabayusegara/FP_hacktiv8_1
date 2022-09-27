@@ -9,7 +9,6 @@ function authentication(req, res, next) {
         req.user = { id, email };
         next();
     } catch (error) {
-        console.log(error);
         res.status(401).json({ message: 'unauthorized' });
     }
 }
