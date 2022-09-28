@@ -1,28 +1,28 @@
 const Reflections = require('../models/reflections')
 
 class ReflectionsController {
-    static reflectionDataAdd(req, res) {
+    static reflectionDataAdd(req, res, next) {
         const { success, low_point, take_away } = req.body;
         Reflections.add(success, low_point, take_away, req.user.id)
             .then((data) => {                
                 res.status(201).json(data);
             })
             .catch((error) => {
-                res.status(500).json({ message: 'internal server error' });
+                next(error);
             });
     }
 
-    static reflectionAllData(req, res) {
+    static reflectionAllData(req, res, next) {
         Reflections.findAll(req.user.id)
             .then((data) => {
                 res.status(201).json(data)
             })
             .catch((error) => {
-                res.status(500).json({ message: 'internal server error' });
+                next(error);
             });
     }
 
-    static reflectionDataUpdate(req, res) {
+    static reflectionDataUpdate(req, res, next) {
         const {id} = req.params
         const { success, low_point, take_away } = req.body;
         Reflections.update(success, low_point, take_away, id, req.user.id)
@@ -31,28 +31,20 @@ class ReflectionsController {
                 res.status(201).json({ message: 'data updated!!' })
             })
             .catch((error)=>{
-                if (error.name === 'cantUpdated') {
-                    res.status(500).json({ message: 'Data Reflections can not Updated' });
-                } else {
-                    res.status(500).json({ message: 'internal server error' });
-                }
+                next(error);
             })
     }
 
-    static reflectionDataDelete(req, res) {
+    static reflectionDataDelete(req, res, next) {
         const { id } = req.params
         Reflections.remove(id, req.user.id)
             .then((data) => {
                 if(data.rowCount!=1) throw ({ name:"cantDeleted" })
                 res.status(201).json({ message: 'data deleted!!' })
-
+                
             })
             .catch((error) => {
-                if(error.name === 'cantDeleted'){
-                    res.status(400).json({message: 'Data Reflections can not Deleted'})
-                } else {
-                    res.status(500).json({ message: 'internal server error' });
-                }
+                next(error);
             })
     }
 }
