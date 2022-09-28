@@ -4,17 +4,18 @@ const User = require("../models/users");
 
 class UsersController {
 
-    static registerUser(req, res) { 
+    static registerUser(req, res, next) { 
         const {email, password} = req.body; 
         User.register(email, password) 
         .then((data) => {
             res.status(201).json({id: data.id, email: data.email})    
-        }).catch((error) => { 
-            res.status(500).json({ message: "internal server error" })
+        })
+        .catch((error) => { 
+        next(error);
         });    
     }
 
-    static loginUser(req, res) {
+    static loginUser(req, res, next) {
        const {email, password} = req.body; 
        User.login(email, password) 
        .then((data) => { 
@@ -22,11 +23,8 @@ class UsersController {
         res.status(201).json({token});
        })
        .catch((error) => {
-        if (error.name === 'UserNotFound' || error.name === 'WrongPassword') { 
-            res.status(401).json({ message : 'User not Found or Wrong Password'});
-        } else {  
-            res.status(401).json({ message : 'internal server error'});
-        }
+        console.log(error);
+        next(error);
        });
     }
 
