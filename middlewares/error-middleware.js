@@ -8,12 +8,12 @@ function errorMiddleware(error, req, res, next) {
     } else if (error.name === 'InvalidToken') {
         code = 401;
         message = 'invalid token';
-    } else if (error.routine === '_bt_check_unique') {
+    } else if (error.name === 'error') {
         code = 401;
-        message = 'User or Email already exists';
+        message = 'Email already exists';
     } else if (error.name === 'UserNotFound' || error.name === 'WrongPassword') { 
         code = 401;
-        message = 'User not Found or Wrong Password';
+        message = 'Email not Found or Wrong Password';
     } else if (error.name === 'cantUpdated') {
         code = 400;
         message = 'Data Reflections can not Updated';
@@ -23,8 +23,8 @@ function errorMiddleware(error, req, res, next) {
     } else if (error.name === 'PageNotFound') {
         code = 404;
         message = 'Oops... nothing here';
-    }
-    return res.status(code).json({ message });
+    } 
+    return res.status(code).json({message});
 }
 
 module.exports = errorMiddleware;

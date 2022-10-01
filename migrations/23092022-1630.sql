@@ -1,7 +1,7 @@
 create table users ( 
 	id serial primary key, 
 	email varchar, 
-	Password VARCHAR
+	password VARCHAR
 );
 
  create table reflections ( 
