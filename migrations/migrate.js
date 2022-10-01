@@ -5,7 +5,7 @@ pool.query(`
 create table users ( 
 	id serial primary key, 
 	email varchar, 
-	Password VARCHAR
+	password VARCHAR
 );
 `, (err, res) => {
     if (err) throw 'cannot create users';
@@ -16,7 +16,7 @@ create table users (
         low_point varchar, 
         take_away varchar, 
         owner_id int, 
-        create_date TIMESTAMP, 
+        created_date TIMESTAMP, 
         modified_date TIMESTAMP, 
         constraint fk_users 
             foreign key(owner_id) 
