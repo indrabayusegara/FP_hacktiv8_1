@@ -15,7 +15,7 @@ async function authentication(req, res, next) {
     // }
 
     try {
-        const token = req.headers["x-acces-token"]
+        const token = req.headers["x-access-token"]
         if (!token) throw {name: 'NoAuthorization'}
 
         const { id, email } = verify(token);
