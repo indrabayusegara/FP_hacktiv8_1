@@ -9,7 +9,7 @@ class UsersController {
         const { email, password } = req.body;
         User.register(email, password)
             .then((data) => {
-                console.log(data.constraint)
+                
                 res.status(201).json({ id: data.id, email: data.email })
             })
             .catch((error) => {

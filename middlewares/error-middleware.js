@@ -5,9 +5,9 @@ function errorMiddleware(error, req, res, next) {
     if (error.name === 'JsonWebTokenError') {
         code = 401;
         message = 'invalid token';
-    } else if (error.name === 'InvalidToken') {
+    } else if (error.name === 'Unauthorized' || error.name === 'NoAuthorization') {
         code = 401;
-        message = 'invalid token';
+        message = 'unauthorized';
     } else if (error.name === 'error') {
         code = 401;
         message = 'Email already exists';
@@ -16,10 +16,10 @@ function errorMiddleware(error, req, res, next) {
         message = 'Email not Found or Wrong Password';
     } else if (error.name === 'cantUpdated') {
         code = 400;
-        message = 'Data Reflections can not Updated';
+        message = 'Data Reflections not found!! so can not Updated ';
     } else if(error.name === 'cantDeleted') {
         code = 400;
-        message = 'Data Reflections can not Deleted';
+        message = 'Data Reflections not found!! so can not Deleted';
     } else if (error.name === 'PageNotFound') {
         code = 404;
         message = 'Oops... nothing here';
